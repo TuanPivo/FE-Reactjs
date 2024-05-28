@@ -24,7 +24,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login onLogin={checkLogin} />} />
-        <Route path="/home" element={
+        <Route path="/" element={
           <PrivateRoute>
             <Home />
           </PrivateRoute>

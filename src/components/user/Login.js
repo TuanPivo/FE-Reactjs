@@ -4,7 +4,7 @@ import 'antd/dist/reset.css';
 import axios from 'axios';
 
 
-export default function Login() {
+export default function Login( { onLogin }) {
 
     const handleLogin = async (values) => {
         try {
@@ -14,6 +14,8 @@ export default function Login() {
             if (token) {
                 localStorage.setItem('token', token);
                 message.success('Login successful!');
+                onLogin();
+                window.location.replace('/');
             }
         } catch (error) {
             message.error('Login failed! Please check your email or password.');
