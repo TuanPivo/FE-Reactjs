@@ -1,10 +1,17 @@
 import { Form, Input, Button, Checkbox, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
 import axios from 'axios';
+import React, {useState} from 'react';
 
 
-export default function Login( { onLogin }) {
+export default function Login() {
+
+    const [show, setShow] = useState(false)
+    const toggleShow = () => {
+        setShow(!show);
+    }
+
 
     const handleLogin = async (values) => {
         try {
@@ -14,7 +21,6 @@ export default function Login( { onLogin }) {
             if (token) {
                 localStorage.setItem('token', token);
                 message.success('Login successful!');
-                onLogin();
                 window.location.replace('/');
             }
         } catch (error) {
@@ -43,8 +49,13 @@ export default function Login( { onLogin }) {
                 >
                     <Input
                         prefix={<LockOutlined className="site-form-item-icon" />}
-                        type="password"
+                        type={show ? "text" : "password"}
                         placeholder="Password"
+                        suffix={
+                            show ?
+                                <EyeOutlined onClick={toggleShow} /> :
+                                <EyeInvisibleOutlined onClick={toggleShow} />
+                        }
                     />
                 </Form.Item>
                 <Form.Item>
