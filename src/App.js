@@ -11,6 +11,7 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    console.log(token)
     if (token) {
       setIsLoggedIn(true);
     }
@@ -24,12 +25,18 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login onLogin={checkLogin} />} />
-        <Route path="/" element={
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
-        } />
-        <Route path="*" element={<Navigate to={isLoggedIn ? "/home" : "/login"} />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="*"
+          element={<Navigate to={isLoggedIn ? '/home' : '/login'} />}
+        />
       </Routes>
     </BrowserRouter>
   );

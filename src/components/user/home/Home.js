@@ -9,9 +9,19 @@ export default function Home() {
 
     const handleCheckInOut = async (type) => {
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/attendance/${type}`);
+            const token = localStorage.getItem('token');
+            console.log(token)
+            const header = { "Authorization": `Bearer ${token}` }
+            const data = {
+                note: reason // 'reason' là giá trị từ Input.TextArea
+            };
+            const {response} = await axios.post(`http://127.0.0.1:8000/api/attendance/${type}`,data, { headers: header});
             // Hiển thị thông báo thành công
-            message.success(response.data.message);
+            if (type === 'checkIn') {
+                message.success('Check in success');
+            } else if (type === 'checkOut') {
+                message.success('Check out success');
+            }
         } catch (error) {
             // Hiển thị thông báo lỗi nếu xảy ra lỗi
             message.error('Failed to check in/out. Please try again later.');
@@ -33,16 +43,16 @@ export default function Home() {
                 <Col span={8}>
                     <div style={{ textAlign: 'center' }}>
                         <h1 style={{ marginBottom: '30px' }}>Time</h1>
-                        <Form onFinish={handleSubmit}>
+                        <Form>
                             <Form.Item>
-                                <Input.TextArea rows={4} placeholder="Note..." value={reason} onChange={handleReasonChange} />
+                                <Input.TextArea rows={4} placeholder="Note..." value={reason} name='note' onChange={handleReasonChange} />
                             </Form.Item>
                             <Form.Item>
                                 {/* Sử dụng onClick để gọi hàm handleSubmit với type tương ứng */}
-                                <Button type="primary" htmlType="submit" onClick={() => handleSubmit(true)} style={{ marginRight: '10px' }}>
+                                <Button type="primary" name='check_in' htmlType="submit" onClick={() => handleSubmit(true)} style={{ marginRight: '10px' }}>
                                     Check In
                                 </Button>
-                                <Button type="primary" htmlType="submit" onClick={() => handleSubmit(false)} style={{ marginRight: '10px' }}>
+                                <Button type="primary" name='check_out' htmlType="submit" onClick={() => handleSubmit(false)} style={{ marginRight: '10px' }}>
                                     Check Out
                                 </Button>
                             </Form.Item>
